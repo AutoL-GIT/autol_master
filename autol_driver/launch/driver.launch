@@ -1,0 +1,14 @@
+<!-- -*- mode: XML -*- -->
+<launch>    
+  <arg name="manufacture_id" default="autol" />
+  <arg name="model_id" default="G32" />
+  <arg name="input_type" default="1" />
+  <arg name="pcap_path" default="" />
+  	
+  <node pkg="autol_driver" type="driver_node" name="driver_node">
+  	<param name="manufacture_id" value="$(arg manufacture_id)"/>  
+  	<param name="model_id" value="$(arg model_id)"/>  
+  	<param name="input_type" value="$(arg input_type)"/>    	
+  	<param name="pcap_path" value="$(arg pcap_path)"/>  
+  </node>
+</launch>

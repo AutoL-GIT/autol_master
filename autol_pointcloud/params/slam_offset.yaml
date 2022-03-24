@@ -1,0 +1,4 @@
+num_lidars: 2
+offset:
+- {lidar_id: 0, roll: 0, pitch: 0, yaw: 25, x_offset: 0.34, y_offset: 0, z_offset: 0}
+- {lidar_id: 1, roll: 0, pitch: 0, yaw: -25, x_offset: -0.34, y_offset: 0, z_offset: 0}
