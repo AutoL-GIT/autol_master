@@ -103,6 +103,7 @@ namespace autol_driver
 	int UDPSocket::RecvFrom(autol_msgs::AutolPacket* packet, int len, int flags) // OOB = 0, Non-Blocking = 2
 	{
 		sockaddr_in from;
+
 		socklen_t size = sizeof(from);
 
         ssize_t ret = recvfrom(udp_socket_, &packet->data[0], len, flags, (sockaddr*) &from, &size);

@@ -13,22 +13,24 @@ namespace autol_driver
         ROS_INFO("constructor : AutolDriver"); 
 
         string pcap_path;
-        int input_type;
         private_nh.param("manufacture_id", config_.manufacture_id, std::string("autol"));
         private_nh.param("model_id", config_.model, std::string("G32"));
         private_nh.param("pcap_path", pcap_path, std::string(""));
-        private_nh.param("input_type", input_type, 2);
+        private_nh.param("input_type", input_type_, 1);
 
         pub_frame_ = nh.advertise<autol_msgs::AutolFrame>("autol_frame_data", 10);
       
-        if (input_type == 1)   
+        if (input_type_ == 1)   
         {            
             input_data_.reset(new autol_driver::SocketInput(private_nh, UDP_PORT));
         }
-        else if (input_type == 2)
+        else if (input_type_ == 2)
         {               
             input_data_.reset(new autol_driver::PcapInput(private_nh, UDP_PORT, FRAMERATE * PACKET_PER_SECOND, pcap_path));                  
         }    
+        else if (input_type_ == 3)
+        {  
+        }
     }
 
     bool AutolDriver::Dispose()
@@ -38,6 +40,10 @@ namespace autol_driver
     
     void AutolDriver::RecvPacket()
     {
+        if (input_type_ == 3)   
+        {
+            return;
+        }
         ROS_INFO("RecvPacket called"); 
 
         UdpPacket* packet = new UdpPacket();
@@ -75,7 +81,7 @@ namespace autol_driver
             {
                 continue;
             }
-        
+
             memcpy(packet, (char*)&(&tmp_packet)->data[0], PACKET_DATA_SIZE);
 
             if (packet->factory_ == 0x11)
@@ -92,7 +98,7 @@ namespace autol_driver
             if (packet->header_.data_type_ == 0xA5B3C2AA && packet->header_.packet_id_ != 0)
             {
                 if (packet->factory_ == 0x11)
-                {
+                {                    
                     ++lidar1_stage_count;
 
                     if(is_first_fov_lidar1 == true)
@@ -115,7 +121,7 @@ namespace autol_driver
                     }
                 }
                 else if (packet->factory_ == 0x12)
-                {
+                {                    
                     ++lidar2_stage_count;
 
                     if(is_first_fov_lidar2 == true)

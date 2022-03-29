@@ -17,6 +17,8 @@ namespace autol_driver
         //int buffer_size = 1330;
         //int port = 5001;
         
+        
+
         int ret = 0;
         if (ret == 0)
            ret = udp_socket.CreateSocket();

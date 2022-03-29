@@ -36,6 +36,7 @@ namespace autol_driver
         UDPSocket udp_socket;
         ros::Publisher pub_frame_;
         bool stop_udp_thread_ = false;
+        int input_type_;
     };
 
 }
